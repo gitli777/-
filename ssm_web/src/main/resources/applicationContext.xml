@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+   <context:component-scan base-package="com.itheima.service"></context:component-scan>
+    <!--
+  2.spring整合mybatis
+  2.1 加载配置文件jdbc.properties
+  -->
+    <!--  <context:property-placeholder location="jdbc.properties"></context:property-placeholder>
+          注意：这里引用jdbc.properties必须使用的格式："classpath:jdbc.properties"
+    -->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+    <!--2.2 创建DruidDataSource数据源对象-->
+    <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driver" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!--
+   2.3 创建SqlSessiionFactory对象
+   -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="druidDataSource"></property>
+        <property name="typeAliasesPackage" value="com.itheima.entity"></property>
+    </bean>
+    <!--
+    2.4 dao映射接口的扫描(MapperScannerConfigurer)
+    -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.itheima.dao"></property>
+    </bean>
+    <!--
+ 2.5 spring的声明式事务
+ -->
+    <!--事务管理器-->
+
+
+    <!--事务通知方法-->
+    <!--事务切面-->
+</beans>
